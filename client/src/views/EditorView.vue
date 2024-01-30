@@ -22,18 +22,14 @@ function updateEditor() {
   let match: RegExpExecArray | null
   let doc = context.value.output
   while ((match = replacer.exec(doc)) != null) {
-    const placeholder = match[0]
-    const id = match[1]
+    const [placeholder, id] = match
     const input = context.value.inputs.get(id)
-    if (!input) {
-      continue
-    }
-    doc = doc.slice(0, match.index) + input.value + doc.slice(match.index + placeholder.length)
-    if (input.value.length > 0) {
-      effects.push(
-        payloadEffect.of([payloadDecoration.range(match.index, match.index + input.value.length)])
-      )
-    }
+    if (!input) continue
+    const inputValue = input.value || '\u200b'
+    doc = doc.slice(0, match.index) + inputValue + doc.slice(match.index + placeholder.length)
+    effects.push(
+      payloadEffect.of([payloadDecoration.range(match.index, match.index + inputValue.length)])
+    )
   }
   editor.dispatch({
     changes: [{ from: 0, to: editor.state.doc.length, insert: doc }],
