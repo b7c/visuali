@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-2">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">VISUALi</a>
       <button
@@ -16,13 +16,12 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0"></ul>
       </div>
     </div>
   </nav>
   <div class="container-fluid">
-    <RouterView /> 
+    <RouterView />
   </div>
 </template>
 
