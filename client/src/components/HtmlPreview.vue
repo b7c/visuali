@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, defineEmits, defineProps, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 const frameRef = ref<HTMLIFrameElement>()
 const props = defineProps<{ content: string | undefined }>()
