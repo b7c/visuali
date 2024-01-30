@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { payloadDecoration, payloadEffect, VisualiEditorView } from '@/editor'
+import { payloadDecoration, payloadEffect } from '@/editor'
 
 import contexts from '@/data/contexts'
 import { contextFromDto } from '@/context'
 
-import { getLanguageExtension } from '@/editor/language'
-
+import VisualiEditor from '@/components/VisualiEditor.vue'
 import HtmlPreview from '@/components/HtmlPreview.vue'
 
+const editorRef = ref<InstanceType<typeof VisualiEditor>>()
 const content = ref<string>()
-const editorRef = ref<HTMLDivElement>()
-let editor: VisualiEditorView
 
 const ctx = contexts[1]
 let context = ref(contextFromDto(ctx))
 
 function updateEditor() {
+  const editor = editorRef.value?.view
+  if (!editor) return
   const effects = []
   const replacer: RegExp = /\{\{(\w+)\}\}/g
   let match: RegExpExecArray | null
@@ -42,13 +42,7 @@ function updateEditor() {
   content.value = doc
 }
 
-function inputChanged() {
-  updateEditor()
-}
-
 onMounted(() => {
-  editor = new VisualiEditorView(editorRef.value)
-  editor.updateLanguage(getLanguageExtension(context.value.lang))
   updateEditor()
 })
 </script>
@@ -66,7 +60,7 @@ onMounted(() => {
           type="text"
           :class="['form-control', 'p-2', input.name ? '' : 'mt-2']"
           v-model="input.value"
-          @input="inputChanged"
+          @input="updateEditor"
           :placeholder="input.hint"
         />
       </div>
@@ -77,7 +71,7 @@ onMounted(() => {
       <h6 class="card-title m-0">Output</h6>
     </div>
     <div class="card-body p-1">
-      <div ref="editorRef"></div>
+      <VisualiEditor ref="editorRef" :editable="true" :lang="context.lang" />
     </div>
   </div>
   <div v-if="context.lang == 'html'" class="card mt-4 m-2">

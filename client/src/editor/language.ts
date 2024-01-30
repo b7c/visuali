@@ -7,4 +7,4 @@ const extensions = new Map<string, Extension>([
     ['sql', sql()],
 ])
 
-export const getLanguageExtension = (id: string) => extensions.get(id)
+export const getLanguageExtension = (id: string | undefined) => extensions.get(id || '') || []
