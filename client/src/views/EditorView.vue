@@ -3,22 +3,13 @@ import { ref, onMounted } from 'vue'
 import { sql } from '@codemirror/lang-sql'
 import { payloadDecoration, payloadEffect, VisualiEditorView } from '@/editor'
 
+import contexts from '@/data/contexts'
+import { contextFromDto } from '@/context'
 const editorRef = ref<HTMLDivElement>()
 let editor: VisualiEditorView
 
-let context = ref({
-  inputs: new Map<string, { name: string; hint: string; value: string }>([
-    [
-      'name',
-      {
-        name: 'Name',
-        hint: '',
-        value: ''
-      }
-    ]
-  ]),
-  output: `SELECT * FROM [users] WHERE [name] LIKE '%{{name}}%'`
-})
+const ctx = contexts[0]
+let context = ref(contextFromDto(ctx))
 
 function updateEditor() {
   const effects = []
