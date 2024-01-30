@@ -58,7 +58,7 @@ onMounted(() => {
 
 <template>
   <div class="card mt-4 m-2">
-    <div class="card-header">
+    <div class="card-header p-2">
       <h6 class="card-title m-0">Search user</h6>
     </div>
     <div class="card-body p-3 pt-2">
@@ -67,7 +67,7 @@ onMounted(() => {
         <input
           id="in"
           type="text"
-          :class="['form-control', 'py-1', input.name ? '' : 'mt-2']"
+          :class="['form-control', 'p-2', input.name ? '' : 'mt-2']"
           v-model="input.value"
           @input="inputChanged"
           :placeholder="input.hint"
@@ -76,7 +76,7 @@ onMounted(() => {
     </div>
   </div>
   <div class="card mt-4 m-2">
-    <div class="card-header">
+    <div class="card-header p-2">
       <h6 class="card-title m-0">Output</h6>
     </div>
     <div class="card-body p-1">
