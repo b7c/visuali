@@ -38,9 +38,9 @@ class VisualiEditorView extends EditorView {
     this.languageCompartment = compartment
   }
 
-  updateLanguage(language: Extension) {
+  updateLanguage(language: Extension | undefined) {
     this.dispatch({
-      effects: this.languageCompartment.reconfigure(language)
+      effects: this.languageCompartment.reconfigure(language || [])
     })
   }
 }

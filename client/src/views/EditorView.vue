@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { sql } from '@codemirror/lang-sql'
 import { payloadDecoration, payloadEffect, VisualiEditorView } from '@/editor'
 
 import contexts from '@/data/contexts'
 import { contextFromDto } from '@/context'
+
+import { getLanguageExtension } from '@/editor/language'
+
+import HtmlPreview from '@/components/HtmlPreview.vue'
+
+const content = ref<string>()
 const editorRef = ref<HTMLDivElement>()
 let editor: VisualiEditorView
 
-const ctx = contexts[0]
+const ctx = contexts[1]
 let context = ref(contextFromDto(ctx))
 
 function updateEditor() {
@@ -32,8 +37,9 @@ function updateEditor() {
   }
   editor.dispatch({
     changes: [{ from: 0, to: editor.state.doc.length, insert: doc }],
-    effects
+    effects,
   })
+  content.value = doc
 }
 
 function inputChanged() {
@@ -42,7 +48,7 @@ function inputChanged() {
 
 onMounted(() => {
   editor = new VisualiEditorView(editorRef.value)
-  editor.updateLanguage(sql())
+  editor.updateLanguage(getLanguageExtension(context.value.lang))
   updateEditor()
 })
 </script>
@@ -72,6 +78,14 @@ onMounted(() => {
     </div>
     <div class="card-body p-1">
       <div ref="editorRef"></div>
+    </div>
+  </div>
+  <div v-if="context.lang == 'html'" class="card mt-4 m-2">
+    <div class="card-header p-2">
+      <h6 class="card-title m-0">Rendered</h6>
+    </div>
+    <div class="card-body p-1">
+      <HtmlPreview :content="content" />
     </div>
   </div>
 </template>

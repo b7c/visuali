@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@codemirror/lang-html": "^6.4.8",
     "@codemirror/lang-sql": "^6.5.5",
     "@codemirror/language": "^6.10.0",
     "@codemirror/state": "^6.4.0",
