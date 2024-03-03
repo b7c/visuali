@@ -32,6 +32,9 @@ onMounted(() => {
     script.text = `(${initializeFrame})();`
     doc.body.innerHTML = props.content || ''
     doc.body.appendChild(script)
+    const style = document.createElement('style')
+    style.innerText = `body { font-size: 28px; font-family: Calibri, sans-serif; }`
+    doc.head.appendChild(style)
   }
   window.addEventListener('message', handleMessage)
   return () => window.removeEventListener('message', handleMessage)
