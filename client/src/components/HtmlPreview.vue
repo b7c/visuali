@@ -48,6 +48,7 @@ const initializeFrame = () => {
       document.body.innerHTML = value
       Array.from(document.body.querySelectorAll('script')).forEach((script) => {
         const scriptEl = document.createElement('script')
+        scriptEl.src = script.src
         scriptEl.text = script.text
         document.body.appendChild(scriptEl).parentNode?.removeChild(scriptEl)
       })
