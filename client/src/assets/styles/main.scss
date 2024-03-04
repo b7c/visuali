@@ -1,0 +1,32 @@
+@import 'bootswatch/dist/lux/bootstrap.min.css';
+
+@font-face {
+  font-family: 'Kode Mono';
+  font-display: auto;
+  src: url('../fonts/KodeMono/KodeMono-VariableFont_wght.ttf') format('truetype');
+}
+
+.kode {
+  font-family: 'Kode Mono';
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  height: 100vh;
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+#app > :nth-child(2) {
+  overflow: auto;
+}
+
+.payload {
+  outline: 0.1em dashed rgba(255, 0, 0, 0.5);
+}

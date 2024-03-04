@@ -20,7 +20,7 @@
       </div>
     </div>
   </nav>
-  <div class="container-fluid">
+  <div class="container-fluid p-0">
     <RouterView />
   </div>
 </template>
