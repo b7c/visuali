@@ -3,7 +3,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-2">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">visuali</a>
+      <a class="navbar-brand kode" href="#">visuali</a>
       <button
         class="navbar-toggler"
         type="button"
