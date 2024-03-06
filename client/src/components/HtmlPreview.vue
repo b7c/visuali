@@ -15,6 +15,32 @@ watch(
   }
 )
 
+// This function gets invoked inside the iframe for initialisation.
+const initFrame = () => {
+  if (!window.frameElement) return
+  window.alert = (value) => {
+    window.parent.postMessage({ type: 'alert', value }, '*')
+  }
+  window.addEventListener('error', (ev) => {
+    console.warn(ev.error)
+    ev.preventDefault()
+  })
+  window.addEventListener('message', (event) => {
+    const { type, value } = event.data
+    if (type === 'html') {
+      document.body.innerHTML = value
+      Array.from(document.body.querySelectorAll('script')).forEach((script) => {
+        const scriptEl = document.createElement('script')
+        if (script.hasAttribute('src')) {
+          scriptEl.src = script.src
+        }
+        scriptEl.text = script.text
+        document.body.appendChild(scriptEl).parentNode?.removeChild(scriptEl)
+      })
+    }
+  })
+}
+
 const handleMessage = (event: MessageEvent) => {
   if (event.source === frameRef.value?.contentWindow) {
     event.stopImmediatePropagation()
@@ -29,7 +55,7 @@ onMounted(() => {
   const doc = frameRef.value?.contentDocument
   if (doc) {
     const script = document.createElement('script')
-    script.text = `(${initializeFrame})();`
+    script.text = `(${initFrame})();`
     doc.body.innerHTML = props.content || ''
     doc.body.appendChild(script)
     const style = document.createElement('style')
@@ -39,25 +65,6 @@ onMounted(() => {
   window.addEventListener('message', handleMessage)
   return () => window.removeEventListener('message', handleMessage)
 })
-
-const initializeFrame = () => {
-  if (!window.frameElement) return
-  window.alert = (value) => {
-    window.parent.postMessage({ type: 'alert', value }, '*')
-  }
-  window.addEventListener('message', (event) => {
-    const { type, value } = event.data
-    if (type === 'html') {
-      document.body.innerHTML = value
-      Array.from(document.body.querySelectorAll('script')).forEach((script) => {
-        const scriptEl = document.createElement('script')
-        scriptEl.src = script.src
-        scriptEl.text = script.text
-        document.body.appendChild(scriptEl).parentNode?.removeChild(scriptEl)
-      })
-    }
-  })
-}
 </script>
 
 <template>
