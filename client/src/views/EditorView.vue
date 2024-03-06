@@ -57,15 +57,16 @@ const onAlert = (msg: any) => alert(msg)
         <h6 class="card-title m-0">Input</h6>
       </div>
       <div class="card-body p-3 pt-2">
-        <div class="form-group" v-for="input of context.inputs.values()" :key="input.name">
-          <label for="in" v-if="input.name">{{ input.name }}</label>
+        <div class="form-group" v-for="input of context.inputs.values()" :key="input.id">
+          <label :for="`input-${input.id}`">{{ input.name }}</label>
           <input
-            id="in"
             type="text"
-            :class="['form-control', input.name ? '' : 'mt-2']"
+            class="form-control"
+            :id="`input-${input.id}`"
             v-model="input.value"
             @input="updateEditor"
-            :placeholder="input.hint"
+            spellcheck="false"
+            autocomplete="off"
           />
         </div>
       </div>
@@ -77,7 +78,7 @@ const onAlert = (msg: any) => alert(msg)
           <fa-icon icon="fa-solid fa-edit" style="height: 0.75em"></fa-icon>
         </button>
       </div>
-      <div class="card-body p-1">
+      <div class="card-body p-0">
         <VisualiEditor class="h-100" ref="editorRef" :editable="editing" :lang="context.lang" />
       </div>
     </div>
@@ -115,7 +116,7 @@ textarea {
   height: 100%;
 }
 .cm-content {
-  font-size: 1.5rem;
+  font-size: 1.1em;
 }
 .cm-focused {
   outline: none !important;
