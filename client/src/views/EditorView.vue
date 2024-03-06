@@ -25,7 +25,7 @@ function updateEditor() {
   const effects = []
   const replacer: RegExp = /\{\{(\w+)\}\}/g
   let match: RegExpExecArray | null
-  let doc = context.value.output
+  let doc = context.value.output || ''
   while ((match = replacer.exec(doc)) != null) {
     const [placeholder, id] = match
     const input = context.value.inputs.get(id)
