@@ -30,3 +30,8 @@ body {
 .payload {
   outline: 0.1em dashed rgba(255, 0, 0, 0.5);
 }
+
+
+label, nav, .card-title {
+  user-select: none;
+}
