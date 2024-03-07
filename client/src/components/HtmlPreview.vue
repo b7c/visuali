@@ -37,6 +37,12 @@ const initFrame = () => {
         scriptEl.text = script.text
         document.body.appendChild(scriptEl).parentNode?.removeChild(scriptEl)
       })
+      // Prevent links from opening inside the iframe.
+      document.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
+        if (!a.href.startsWith('javascript:')) {
+          a.target = '_blank'
+        }
+      })
     }
   })
 }
@@ -59,7 +65,14 @@ onMounted(() => {
     doc.body.innerHTML = props.content || ''
     doc.body.appendChild(script)
     const style = document.createElement('style')
-    style.innerText = `body { font-size: 28px; font-family: Calibri, sans-serif; }`
+    style.innerText = `
+body {
+  font-size: 28px; font-family: Calibri, sans-serif;
+}
+input {
+  font-size: 24px;
+}
+`
     doc.head.appendChild(style)
   }
   window.addEventListener('message', handleMessage)

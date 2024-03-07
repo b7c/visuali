@@ -17,11 +17,7 @@ class Context {
         this.name = name
         this.lang = lang
         this.inputs = new Map<string, Input>(inputs.map(input => [
-            input.id,
-            {
-                ...input,
-                value: '',
-            }
+            input.id, { ...input, }
         ]))
         this.output = output
     }
@@ -38,7 +34,12 @@ function contextFromDto({name, lang, inputs, output}: ContextDto): Context {
     return new Context({
         name,
         lang,
-        inputs: inputs.map(input => ({ ...input, value: '', })),
+        inputs: inputs.map(input => ({
+            id: input.id,
+            name: input.name,
+            hint: input.hint || '',
+            value: input.value || '',
+        })),
         output,
     })
 }

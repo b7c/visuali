@@ -8,7 +8,8 @@ interface ContextDto {
 interface InputDto {
     id: string,
     name: string,
-    hint: string, 
+    hint?: string, 
+    value?: string
 }
 
 export type { ContextDto, InputDto }
