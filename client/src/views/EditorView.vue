@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, reactive } from 'vue'
 import { payloadDecoration, payloadEffect } from '@/editor'
+
+import { Modal } from 'bootstrap'
 
 import contexts from '@/data/contexts'
 import { Context, contextFromDto } from '@/context'
@@ -13,6 +15,17 @@ const editorRef = ref<InstanceType<typeof VisualiEditor>>()
 const editing = ref(false)
 const content = ref<string>()
 
+const sanitiseOpts = reactive({
+  htmlAngleBrackets: false,
+  htmlQuotes: false,
+  stringDQuotes: false,
+  stringSQuotes: false,
+  stringBackslash: false,
+  stringFwdSlash: false,
+})
+
+const modalDiv = ref<HTMLDivElement>()
+
 let selectedContext = ref<ContextDto>(contexts[0])
 let context = ref<Context>(contextFromDto(selectedContext.value))
 watch(selectedContext, () => (context.value = contextFromDto(selectedContext.value)))
@@ -20,6 +33,12 @@ watch(context, updateEditor)
 
 function toggleEdit() {
   editing.value = !editing.value
+}
+
+function showSanitisation() {
+  const div = modalDiv.value
+  if (!div) return
+  Modal.getOrCreateInstance(div).show()
 }
 
 function updateEditor() {
@@ -33,7 +52,27 @@ function updateEditor() {
     const [placeholder, id] = match
     const input = context.value.inputs.get(id)
     if (!input) continue
-    const inputValue = input.value || '\u200b'
+    let inputValue = input.value || '\u200b'
+    console.log(sanitiseOpts)
+    if (sanitiseOpts.htmlAngleBrackets) {
+      inputValue = inputValue.replace(/</g, '&lt;')
+      inputValue = inputValue.replace(/>/g, '&gt;')
+    }
+    if (sanitiseOpts.htmlQuotes) {
+      inputValue = inputValue.replace(/"/g, '&quot;')
+    }
+    if (sanitiseOpts.stringBackslash) {
+      inputValue = inputValue.replace(/\\/g, '\\\\')
+    }
+    if (sanitiseOpts.stringFwdSlash) {
+      inputValue = inputValue.replace(/\//g, '\\/')
+    }
+    if (sanitiseOpts.stringDQuotes) {
+      inputValue = inputValue.replace(/"/g, '\\"')
+    }
+    if (sanitiseOpts.stringSQuotes) {
+      inputValue = inputValue.replace(/'/g, "\\'")
+    }
     doc = doc.slice(0, match.index) + inputValue + doc.slice(match.index + placeholder.length)
     effects.push(
       payloadEffect.of([payloadDecoration.range(match.index, match.index + inputValue.length)])
@@ -50,6 +89,8 @@ onMounted(() => {
   updateEditor()
 })
 
+watch(sanitiseOpts, () => updateEditor())
+
 const onAlert = (msg: any) => alert(msg)
 </script>
 
@@ -58,7 +99,9 @@ const onAlert = (msg: any) => alert(msg)
     <div class="card m-0">
       <div class="card-header p-2 d-flex flex-row align-items-center">
         <h6 class="card-title m-0">Input</h6>
-        <span class="separator ms-2"></span>
+        <button class="m-0 p-0 btn d-flex align-items-center p-1" @click="showSanitisation">
+          <fa-icon icon="fa-solid fa-broom" style="height: 0.75em"></fa-icon>
+        </button>
         <select class="form-select form-select-sm py-0 px-2 m-0 bg-none" v-model="selectedContext">
           <option v-for="(ctx, idx) in contexts" :key="idx" :value="ctx">
             {{ ctx.name }}
@@ -104,6 +147,104 @@ const onAlert = (msg: any) => alert(msg)
       </div>
     </template>
   </div>
+  <!-- Modal -->
+  <div ref="modalDiv" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sanitisation</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div>
+              <h6>HTML encode</h6>
+            </div>
+            <div>
+              <input
+                v-model="sanitiseOpts.htmlAngleBrackets"
+                id="sanitiseHtmlAngleBrackets"
+                type="checkbox"
+                class="form-check-input"
+              />
+              <label for="sanitiseHtmlAngleBrackets" class="ps-2 form-label"
+                >Angle brackets: <span class="char">&gt;</span>
+                <span class="char">&lt;</span></label
+              >
+            </div>
+            <div>
+              <input
+                v-model="sanitiseOpts.htmlQuotes"
+                id="sanitiseHtmlQuotes"
+                type="checkbox"
+                class="form-check-input"
+              />
+              <label for="sanitiseHtmlQuotes" class="ps-2 form-label"
+                >Double quotes <span class="char">"</span></label
+              >
+            </div>
+          </div>
+          <div>
+            <div>
+              <h6>String Escape</h6>
+            </div>
+            <div>
+              <input
+                v-model="sanitiseOpts.stringDQuotes"
+                id="sanitiseStringQuotes"
+                type="checkbox"
+                class="form-check-input"
+              />
+              <label for="sanitiseStringQuotes" class="ps-2 form-label"
+                >Double quotes <span class="char">"</span></label
+              >
+            </div>
+            <div>
+              <input
+                v-model="sanitiseOpts.stringSQuotes"
+                id="sanitiseStringSQuotes"
+                type="checkbox"
+                class="form-check-input"
+              />
+              <label for="sanitiseStringSQuotes" class="ps-2 form-label"
+                >Single quotes <span class="char">'</span></label
+              >
+            </div>
+            <div>
+              <input
+                v-model="sanitiseOpts.stringBackslash"
+                id="sanitiseStringBackslash"
+                type="checkbox"
+                class="form-check-input"
+              />
+              <label for="sanitiseStringBackslash" class="ps-2 form-label"
+                >Backslash <span class="char">\</span></label
+              >
+            </div>
+            <div>
+              <input
+                v-model="sanitiseOpts.stringFwdSlash"
+                id="sanitiseStringFwdSlash"
+                type="checkbox"
+                class="form-check-input"
+              />
+              <label for="sanitiseStringFwdSlash" class="ps-2 form-label"
+                >Forward slash <span class="char">/</span></label
+              >
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -121,6 +262,14 @@ const onAlert = (msg: any) => alert(msg)
 input,
 textarea {
   padding: 5px;
+}
+
+.char {
+  margin-right: 4px;
+  padding: 0px 4px;
+  background: #eee;
+  border-radius: 4px;
+  font-family: Monospace;
 }
 
 .card-container {
