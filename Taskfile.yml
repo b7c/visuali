@@ -1,0 +1,34 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  build:
+    desc: Builds the application.
+    cmds:
+      - task: build:app
+      - task: dist:cp
+      - task: build:server
+  build:server:
+    cmds:
+      - go build -o ./bin/visuali ./cmd/visuali/visuali.go
+  build:app:
+    dir: app
+    cmds:
+      - vite build
+  dist:cp:
+    cmds:
+      - rm -rf ./pkg/visuali/assets/dist
+      - cp -r ./app/dist ./pkg/visuali/assets/
+  dev:
+    desc: Runs a live development server.
+    deps: [dev:app, dev:server]
+  dev:app:
+    dir: app
+    cmds:
+      - vite build -w
+  dev:server:
+    env:
+      VISUALI_DIST_PATH: ./app/dist
+    cmds:
+      - go run -tags dev ./cmd/visuali/visuali.go 
