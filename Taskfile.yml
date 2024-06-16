@@ -15,7 +15,7 @@ tasks:
   build:app:
     dir: app
     cmds:
-      - vite build
+      - pnpm run build
   dist:cp:
     cmds:
       - rm -rf ./pkg/visuali/assets/dist
@@ -26,7 +26,7 @@ tasks:
   dev:app:
     dir: app
     cmds:
-      - vite build -w
+      - pnpm run build -w
   dev:server:
     env:
       VISUALI_DIST_PATH: ./app/dist
