@@ -14,6 +14,7 @@ tasks:
       - go build -o ./bin/visuali ./cmd/visuali/main.go
   build:app:
     dir: app
+    deps: [install:app]
     cmds:
       - pnpm run build
   dist:cp:
@@ -25,6 +26,7 @@ tasks:
     deps: [dev:app, dev:server]
   dev:app:
     dir: app
+    deps: [install:app]
     cmds:
       - pnpm run build -w
   dev:server:
@@ -32,3 +34,11 @@ tasks:
       VISUALI_DIST_PATH: ./app/dist
     cmds:
       - go run -tags dev ./cmd/visuali/main.go 
+  install:app:
+    dir: app
+    sources:
+      - package.json
+    generates:
+      - node_modules/**/*
+    cmds:
+      - pnpm install
