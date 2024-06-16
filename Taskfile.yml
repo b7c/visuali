@@ -11,7 +11,7 @@ tasks:
       - task: build:server
   build:server:
     cmds:
-      - go build -o ./bin/visuali ./cmd/visuali/visuali.go
+      - go build -o ./bin/visuali ./cmd/visuali/main.go
   build:app:
     dir: app
     cmds:
@@ -31,4 +31,4 @@ tasks:
     env:
       VISUALI_DIST_PATH: ./app/dist
     cmds:
-      - go run -tags dev ./cmd/visuali/visuali.go 
+      - go run -tags dev ./cmd/visuali/main.go 
