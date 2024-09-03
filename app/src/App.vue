@@ -1,31 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Menubar from 'primevue/menubar'
+</script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-2">
-    <div class="container-fluid">
-      <router-link to="/" class="navbar-brand kode">visuali</router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item me-0">
-            <router-link to="/about" class="nav-link">About</router-link>
-          </li>
-        </ul>
-      </div>
+  <div id="app" class="bg-slate-100">
+    <Menubar class="m-2 mb-0">
+      <template #start>
+        <div class="kode text-lg select-none">visuali</div>
+      </template>
+    </Menubar>
+    <div>
+      <RouterView />
     </div>
-  </nav>
-  <div class="container-fluid p-0">
-    <RouterView />
   </div>
 </template>
 

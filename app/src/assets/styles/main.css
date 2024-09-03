@@ -1,5 +1,13 @@
-@import 'bootswatch/dist/lux/bootstrap.min.css';
-@import './helpers.scss';
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
 
 @font-face {
   font-family: 'Kode Mono';
@@ -9,12 +17,6 @@
 
 .kode {
   font-family: 'Kode Mono';
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
 }
 
 #app {
@@ -32,7 +34,6 @@ body {
   outline: 0.1em dashed rgba(255, 0, 0, 0.5);
 }
 
-
-label, nav, .card-title {
+label {
   user-select: none;
 }

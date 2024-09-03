@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 
-const frameRef = ref<HTMLIFrameElement>()
+const frame = ref<HTMLIFrameElement>()
 const props = defineProps<{ content: string | undefined }>()
 const emit = defineEmits<{ alert: [value: any] }>()
 
 watch(
   () => props.content,
   (value) => {
-    frameRef?.value?.contentWindow?.postMessage({
+    frame?.value?.contentWindow?.postMessage({
       type: 'html',
       value,
     })
@@ -43,12 +43,16 @@ const initFrame = () => {
           a.target = '_blank'
         }
       })
+    } else if (type === 'style') {
+      const style = window.document.createElement('style')
+      style.innerText = value
+      window.document.head.appendChild(style)
     }
   })
 }
 
 const handleMessage = (event: MessageEvent) => {
-  if (event.source === frameRef.value?.contentWindow) {
+  if (event.source === frame.value?.contentWindow) {
     event.stopImmediatePropagation()
     const { type, value } = event.data
     if (type === 'alert') {
@@ -58,22 +62,26 @@ const handleMessage = (event: MessageEvent) => {
 }
 
 onMounted(() => {
-  const doc = frameRef.value?.contentDocument
+  const doc = frame.value?.contentDocument
   if (doc) {
     const script = document.createElement('script')
     script.text = `(${initFrame})();`
     doc.body.innerHTML = props.content || ''
     doc.body.appendChild(script)
-    const style = document.createElement('style')
-    style.innerText = `
-body {
-  font-size: 28px; font-family: Calibri, sans-serif;
-}
-input {
-  font-size: 24px;
-}
-`
-    doc.head.appendChild(style)
+    frame?.value?.contentWindow?.postMessage({
+      type: 'style',
+      value: `
+        html {
+          font-size: 16px;
+        }
+        body {
+          font-size: 1.25rem; font-family: Calibri, sans-serif;
+        }
+        input {
+          font-size: 20px;
+        }
+      `
+    })
   }
   window.addEventListener('message', handleMessage)
   return () => window.removeEventListener('message', handleMessage)
@@ -81,7 +89,7 @@ input {
 </script>
 
 <template>
-  <iframe ref="frameRef"></iframe>
+  <iframe ref="frame"></iframe>
 </template>
 
 <style scoped>
