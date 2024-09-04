@@ -106,11 +106,14 @@ onMounted(() => {
 
 watch(sanitize, () => updateEditor())
 
+const enableAlerts = ref(true)
 const showAlertDialog = ref(false)
 const alertText = ref('')
 const onAlert = (msg: any) => {
-  alertText.value = `${msg || ''}`
-  showAlertDialog.value = true
+  if (enableAlerts.value) {
+    alertText.value = `${msg || ''}`
+    showAlertDialog.value = true
+  }
 }
 </script>
 
@@ -181,8 +184,18 @@ const onAlert = (msg: any) => {
       <SplitterPanel id="rendered" class="h-full overflow-visible" v-if="context.lang==='html'">
         <Card class="h-full" pt:body:class="p-0 h-full" pt:content:class="h-full">
           <template #header>
-            <div class="p-2.5 px-4">
-              <h6 class="card-title m-0">Rendered</h6>
+            <div class="p-4 py-2 h-full flex flex-row items-center gap-2 select-none">
+              <h6>Result</h6>
+              <Button
+                text
+                severity="secondary"
+                @click="enableAlerts = !enableAlerts"
+                class="ms-auto w-8 -mx-2"
+              >
+                <fa-icon
+                  :icon="`fa-solid ${enableAlerts?'fa-bell':'fa-bell-slash'}`"
+                  style="height: 0.75em"/>
+              </Button>
             </div>
             <Divider class="m-0" />
           </template>
