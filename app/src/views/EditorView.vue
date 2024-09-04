@@ -115,13 +115,34 @@ const onAlert = (msg: any) => {
     showAlertDialog.value = true
   }
 }
+
+// Prevents the iframe from stealing mouse events
+// while resizing splitter panels.
+const isDragging = ref(false)
+function beginDrag() {
+  isDragging.value = true
+}
+function endDrag() {
+  isDragging.value = false
+}
 </script>
 
 <template>
   <div class="h-full p-2 bg-slate-100">
-    <Splitter gutter-size="8" class="h-full rounded-none border-none bg-transparent">
+    <Splitter
+      @resizestart="beginDrag"
+      @resizeend="endDrag"
+      gutter-size="8"
+      class="h-full rounded-none border-none bg-transparent"
+    >
       <SplitterPanel class="overflow-visible">
-        <Splitter layout="vertical" gutter-size="8" class="h-full rounded-none border-none bg-transparent">
+        <Splitter
+          @resizestart="beginDrag"
+          @resizeend="endDrag"
+          layout="vertical"
+          gutter-size="8"
+          class="h-full rounded-none border-none bg-transparent"
+        >
           <SplitterPanel class="overflow-visible">
             <Card class="h-full">
               <template #header>
@@ -201,7 +222,11 @@ const onAlert = (msg: any) => {
           </template>
           <template #content>
             <div v-if="context.lang==='html'" class="card-body p-1 h-full">
-              <HtmlPreview :content="content" @alert="onAlert" />
+              <HtmlPreview
+                :content="content"
+                :enable-mouse-events="!isDragging"
+                @alert="onAlert"
+              />
             </div>
           </template>
         </Card>

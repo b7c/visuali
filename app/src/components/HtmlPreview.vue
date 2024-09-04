@@ -2,11 +2,17 @@
 import { ref, onMounted, watch } from 'vue'
 
 const frame = ref<HTMLIFrameElement>()
-const props = defineProps<{ content: string | undefined }>()
+const {
+  content,
+  enableMouseEvents = true
+} = defineProps<{
+  content?: string,
+  enableMouseEvents?: boolean
+}>()
 const emit = defineEmits<{ alert: [value: any] }>()
 
 watch(
-  () => props.content,
+  () => content,
   (value) => {
     frame?.value?.contentWindow?.postMessage({
       type: 'html',
@@ -66,7 +72,7 @@ onMounted(() => {
   if (doc) {
     const script = document.createElement('script')
     script.text = `(${initFrame})();`
-    doc.body.innerHTML = props.content || ''
+    doc.body.innerHTML = content || ''
     doc.body.appendChild(script)
     frame?.value?.contentWindow?.postMessage({
       type: 'style',
@@ -89,7 +95,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <iframe ref="frame"></iframe>
+  <iframe ref="frame" :class="{
+    'pointer-events-none': !enableMouseEvents,
+  }"></iframe>
 </template>
 
 <style scoped>
