@@ -127,14 +127,6 @@ const onAlert = (msg: any) => {
               <template #header>
                 <div class="p-4 py-2 h-full flex flex-row items-center gap-2 select-none">
                   <h6>Input</h6>
-                  <Button
-                    text
-                    severity="secondary"
-                    @click="showSanitizeOptions = true"
-                    class="p-2"
-                  >
-                    <fa-icon icon="fa-solid fa-broom" style="height: 0.75em"></fa-icon>
-                  </Button>
                   <CascadeSelect
                     v-model="selectedContext"
                     :options="contexts"
@@ -142,8 +134,16 @@ const onAlert = (msg: any) => {
                     option-group-label="name"
                     :optionGroupChildren="['contexts']"
                     placeholder="Select a context"
-                    class="text-xs"
+                    class="ms-auto text-xs"
                   />
+                  <Button
+                    text
+                    severity="secondary"
+                    @click="showSanitizeOptions = true"
+                    class="w-8 -me-2"
+                  >
+                    <fa-icon icon="fa-solid fa-broom" style="height: 0.75em"></fa-icon>
+                  </Button>
                 </div>
                 <Divider class="m-0 z-40" />
               </template>
