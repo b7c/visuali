@@ -132,7 +132,7 @@ function endDrag() {
     <Splitter
       @resizestart="beginDrag"
       @resizeend="endDrag"
-      gutter-size="8"
+      :gutter-size="8"
       class="h-full rounded-none border-none bg-transparent"
     >
       <SplitterPanel class="overflow-visible">
@@ -140,7 +140,7 @@ function endDrag() {
           @resizestart="beginDrag"
           @resizeend="endDrag"
           layout="vertical"
-          gutter-size="8"
+          :gutter-size="8"
           class="h-full rounded-none border-none bg-transparent"
         >
           <SplitterPanel class="overflow-visible">
