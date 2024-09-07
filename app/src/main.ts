@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import PrimeVue from 'primevue/config'
+import Tooltip from 'primevue/tooltip'
 import { PrimeVueOptions } from './config/app'
 
 import App from './App.vue'
@@ -28,5 +29,6 @@ app.use(createPinia())
 app.use(router)
 
 app.use(PrimeVue, PrimeVueOptions)
+app.directive('tooltip', Tooltip);
 
 app.mount('#root')

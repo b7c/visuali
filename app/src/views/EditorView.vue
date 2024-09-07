@@ -162,6 +162,10 @@ function endDrag() {
                     severity="secondary"
                     @click="showSanitizeOptions = true"
                     class="w-8 -me-2"
+                    v-tooltip="{
+                      value: 'Sanitization',
+                      showDelay: 600,
+                    }"
                   >
                     <fa-icon icon="fa-solid fa-broom" style="height: 0.75em"></fa-icon>
                   </Button>
@@ -212,6 +216,12 @@ function endDrag() {
                 severity="secondary"
                 @click="enableAlerts = !enableAlerts"
                 class="ms-auto w-8 -mx-2"
+                v-tooltip="{
+                  value: enableAlerts
+                    ? 'Silence alerts'
+                    : 'Enable alerts',
+                  showDelay: 600,
+                }"
               >
                 <fa-icon
                   :icon="`fa-solid ${enableAlerts?'fa-bell':'fa-bell-slash'}`"
