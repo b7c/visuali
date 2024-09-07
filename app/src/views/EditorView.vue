@@ -24,6 +24,7 @@ import SanitizeOptionsDialog from '@/components/SanitizeOptionsDialog.vue'
 import AlertDialog from '@/components/AlertDialog.vue'
 
 const editorRef = ref<InstanceType<typeof VisualiEditor>>()
+const htmlPreviewRef = ref<InstanceType<typeof HtmlPreview>>()
 const editing = ref(false)
 const content = ref<string>()
 
@@ -115,6 +116,7 @@ const onAlert = (msg: any) => {
     showAlertDialog.value = true
   }
 }
+watch(enableAlerts, (enabled) => enabled && htmlPreviewRef.value?.refresh())
 
 // Prevents the iframe from stealing mouse events
 // while resizing splitter panels.
@@ -233,6 +235,7 @@ function endDrag() {
           <template #content>
             <div v-if="context.lang==='html'" class="card-body p-1 h-full">
               <HtmlPreview
+                ref="htmlPreviewRef"
                 :content="content"
                 :enable-mouse-events="!isDragging"
                 @alert="onAlert"

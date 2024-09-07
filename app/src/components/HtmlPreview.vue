@@ -21,6 +21,13 @@ watch(
   }
 )
 
+function refresh() {
+  frame?.value?.contentWindow?.postMessage({
+    type: 'html',
+    value: content
+  })
+}
+
 // This function gets invoked inside the iframe for initialisation.
 const initFrame = () => {
   if (!window.frameElement) return
@@ -92,6 +99,8 @@ onMounted(() => {
   window.addEventListener('message', handleMessage)
   return () => window.removeEventListener('message', handleMessage)
 })
+
+defineExpose({ refresh })
 </script>
 
 <template>
