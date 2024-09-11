@@ -249,8 +249,12 @@ function endDrag() {
   <SanitizeOptionsDialog v-model:visible="showSanitizeOptions" v-model:html-angle-brackets="sanitize.html.angleBrackets"
     v-model:html-ampersand="sanitize.html.ampersand" v-model:html-quotes="sanitize.html.quotes"
     v-model:string-quotes="sanitize.string.quotes" v-model:string-single-quotes="sanitize.string.singleQuotes"
-    v-model:string-backslash="sanitize.string.backslash" />
-  <AlertDialog v-model:visible="showAlertDialog" :text="alertText" />
+    v-model:string-backslash="sanitize.string.backslash"
+    @dragstart="beginDrag" @dragend="endDrag" />
+  <AlertDialog
+    v-model:visible="showAlertDialog" :text="alertText"
+    @dragstart="beginDrag" @dragend="endDrag"
+  />
 </template>
 
 <style scoped>

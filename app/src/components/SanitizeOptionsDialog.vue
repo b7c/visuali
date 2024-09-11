@@ -12,6 +12,7 @@ const htmlAmpersand = defineModel('htmlAmpersand')
 const stringQuotes = defineModel('stringQuotes')
 const stringSingleQuotes = defineModel('stringSingleQuotes')
 const stringBackslash = defineModel('stringBackslash')
+const emit = defineEmits(['dragstart', 'dragend'])
 </script>
 
 <template>
@@ -19,6 +20,8 @@ const stringBackslash = defineModel('stringBackslash')
     v-model:visible="visible"
     header="Sanitization"
     pt:header:class="py-2 pb-0 select-none"
+    @dragstart="() => emit('dragstart')"
+    @dragend="() => emit('dragend')"
   >
     <Fieldset legend="HTML">
       <div class="flex items-center gap-2">
