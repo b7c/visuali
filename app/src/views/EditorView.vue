@@ -146,7 +146,7 @@ function endDrag() {
           class="h-full rounded-none border-none bg-transparent"
         >
           <SplitterPanel class="overflow-visible">
-            <Card class="h-full">
+            <Card class="h-full rounded-none">
               <template #header>
                 <div class="p-4 py-2 h-full flex flex-row items-center gap-2 select-none">
                   <h6>Input</h6>
@@ -192,7 +192,7 @@ function endDrag() {
             </Card>
           </SplitterPanel>
           <SplitterPanel class="h-full overflow-visible">
-            <Card class="h-full overflow-hidden" pt:body:class="p-0 h-full overflow-hidden" pt:content:class="h-full">
+            <Card class="h-full rounded-none overflow-hidden" pt:body:class="p-0 h-full overflow-hidden" pt:content:class="h-full">
               <template #header>
                 <div class="px-4 py-2 flex flex-row items-center gap-2">
                   <h6>Output</h6>
@@ -209,7 +209,7 @@ function endDrag() {
         </Splitter>
       </SplitterPanel>
       <SplitterPanel id="rendered" class="h-full overflow-visible" v-if="context.lang==='html'">
-        <Card class="h-full" pt:body:class="p-0 h-full" pt:content:class="h-full">
+        <Card class="h-full rounded-none" pt:body:class="p-0 h-full" pt:content:class="h-full">
           <template #header>
             <div class="p-4 py-2 h-full flex flex-row items-center gap-2 select-none">
               <h6>Result</h6>
