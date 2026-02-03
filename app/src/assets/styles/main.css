@@ -1,13 +1,5 @@
-@layer tailwind-base, primevue, tailwind-utilities;
-
-@layer tailwind-base {
-  @tailwind base;
-}
-
-@layer tailwind-utilities {
-  @tailwind components;
-  @tailwind utilities;
-}
+@import "tailwindcss";
+@import "@nuxt/ui";
 
 @font-face {
   font-family: 'Kode Mono';
@@ -17,17 +9,6 @@
 
 .kode {
   font-family: 'Kode Mono';
-}
-
-#app {
-  height: 100vh;
-  max-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-
-#app > :nth-child(2) {
-  overflow: auto;
 }
 
 .payload {

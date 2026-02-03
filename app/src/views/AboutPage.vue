@@ -5,8 +5,8 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 <template>
   <div class="container-lg p-4">
-    <div class="d-flex flex-row gap-2 fs-3 align-items-center">
-      <span class="kode text-secondary text-lowercase fs-1 text-bold">visuali</span>
+    <div class="flex flex-row gap-2 text-lg items-center">
+      <span class="kode text-secondary font-bold">visuali</span>
       <div class="separator"></div>
       <a href="https://github.com/b7c/visuali" target="_blank" class="icon-link">
         <FontAwesomeIcon :icon="faGithub" class="text-secondary" />
@@ -43,6 +43,6 @@ a:hover {
 }
 
 .icon-link:hover {
-  scale: 1.5;
+  scale: 1.25;
 }
 </style>

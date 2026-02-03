@@ -1,26 +1,24 @@
 <script setup lang="ts">
-import Dialog from 'primevue/dialog'
-import Button from 'primevue/button'
-
-const props = defineProps(['text'])
-const visible = defineModel('visible')
-const emit = defineEmits(['dragstart', 'dragend'])
+const props = defineProps<{ text: string }>()
+const visible = defineModel<boolean>('visible')
 </script>
 
 <template>
-  <Dialog
-    modal
-    header="Alert!"
-    v-model:visible="visible"
+  <UModal
+    v-model:open="visible"
     style="min-width: 24rem"
-    @dragstart="() => emit('dragstart')"
-    @dragend="() => emit('dragend')"
+    class="select-none"
   >
-    <span class="text-surface-500 dark:text-surface-400 block mb-8">
-      {{ props.text }}
-    </span>
-    <div class="flex justify-end gap-2">
-      <Button type="button" label="OK" severity="secondary" @click="visible = false"/>
-    </div>
-  </Dialog>
+    <template #title>
+      Alert!
+    </template>
+    <template #body>
+      <span class="text-surface-500 dark:text-surface-400 block mb-8">
+        {{ props.text }}
+      </span>
+      <div class="flex justify-end gap-2">
+        <Button type="button" label="OK" severity="secondary" @click="visible = false"/>
+      </div>
+    </template>
+  </UModal>
 </template>
